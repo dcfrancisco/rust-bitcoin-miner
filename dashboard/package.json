@@ -1,9 +1,10 @@
 {
   "name": "dashboard",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Bitcoin Miner Dashboard",
+  "main": "main.js",
   "scripts": {
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,5 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^39.2.3"
+  },
+  "dependencies": {
+    "ws": "^8.18.3"
   }
 }

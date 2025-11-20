@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bitcoin Miner Dashboard</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .status-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #e74c3c;
+      }
+
+      .status-indicator.connected {
+        background: #2ecc71;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .content {
+        padding: 30px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .stat-card {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+      }
+
+      .stat-card h3 {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .stat-card .value {
+        font-size: 2em;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .controls {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .control-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      label {
+        font-weight: 600;
+        color: #555;
+      }
+
+      input[type="number"] {
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 1em;
+        width: 100px;
+      }
+
+      button {
+        padding: 12px 24px;
+        font-size: 1em;
+        font-weight: 600;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-danger {
+        background: #e74c3c;
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+      }
+
+      .btn-success {
+        background: #2ecc71;
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: #27ae60;
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .log {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 0.9em;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .log-entry {
+        margin-bottom: 5px;
+        padding: 5px;
+        border-left: 3px solid #3498db;
+        padding-left: 10px;
+      }
+
+      .log-entry.success {
+        border-left-color: #2ecc71;
+      }
+
+      .log-entry.error {
+        border-left-color: #e74c3c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>⛏️ Bitcoin Miner Dashboard</h1>
+        <div class="status">
+          <div id="statusIndicator" class="status-indicator"></div>
+          <span id="statusText">Disconnected</span>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Hash Rate</h3>
+            <div class="value" id="hashRate">0.00 H/s</div>
+          </div>
+          <div class="stat-card">
+            <h3>Total Hashes</h3>
+            <div class="value" id="totalHashes">0</div>
+          </div>
+          <div class="stat-card">
+            <h3>Difficulty</h3>
+            <div class="value" id="difficulty">0</div>
+          </div>
+          <div class="stat-card">
+            <h3>Status</h3>
+            <div class="value" id="miningStatus">Idle</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="control-group">
+            <label for="difficultyInput">Difficulty:</label>
+            <input
+              type="number"
+              id="difficultyInput"
+              value="16"
+              min="1"
+              max="32"
+            />
+          </div>
+          <button id="connectBtn" class="btn-success">Connect</button>
+          <button id="startBtn" class="btn-primary" disabled>
+            Start Mining
+          </button>
+          <button id="stopBtn" class="btn-danger" disabled>Stop Mining</button>
+        </div>
+
+        <div class="log" id="logContainer">
+          <div class="log-entry">
+            Dashboard initialized. Click "Connect" to start.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>
