@@ -14,6 +14,14 @@ A functional Bitcoin mining engine written in Rust, with a real-time monitoring 
   - Start/Stop mining
   - Worker stats
 
+## Project
+```
+rust-bitcoin-miner/
+├─ backend/ # Rust mining engine
+├─ dashboard/ # Electron UI
+├─ docs/ # Architecture & notes
+└─ README.md
+```
 
 ## Roadmap
 1. Basic mining engine (Rust)
