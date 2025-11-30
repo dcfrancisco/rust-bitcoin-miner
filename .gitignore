@@ -4,3 +4,17 @@ dist/
 build/
 *.log
 .DS_Store
+backend/raspberrypi/data/lotto_history.csv
+backend/raspberrypi/data/backups/lotto_export_2025-11-29.csv
+backend/raspberrypi/data/backups/lotto_export_2025-11-29.json
+
+# SQLite database files
+*.sqlite
+*.db
+*.sqlite3
+backend/raspberrypi/data/lotto_history.sqlite
+
+# Environment variable files
+.env
+.env.local
+.env.*.local
