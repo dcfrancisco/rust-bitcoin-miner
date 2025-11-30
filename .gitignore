@@ -18,3 +18,9 @@ backend/raspberrypi/data/lotto_history.sqlite
 .env
 .env.local
 .env.*.local
+
+# GitHub Copilot - ignore local Copilot files/suggestions (keep repo-level config)
+.github/copilot/
+
+# VSCode settings
+.vscode/
